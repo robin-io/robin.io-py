@@ -8,16 +8,15 @@ class Robin:
 
         self.api_key = api_key
         self.tls = tls
+        self.HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
 
     
     def create_user_token(self, data):
         # defining a params dict for the parameters to be sent to the API
         DATA = data
-        print(DATA)
-        HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
         
         # sending post request and saving the response as response object
-        r = requests.post(url = BASE_URL+"/chat/user_token", json=DATA, headers=HEADERS)
+        r = requests.post(url = BASE_URL+"/chat/user_token", json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()

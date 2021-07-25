@@ -10,7 +10,7 @@ class BaseCase(unittest.TestCase):
     def test_create_user_token_success(self):
         actual = robin_test.create_user_token(data={
            "meta_data":{
-                "name": "Samuel",
+                "name": "Samuel 0.",
             }
         })
         print(actual)
