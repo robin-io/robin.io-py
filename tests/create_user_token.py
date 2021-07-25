@@ -14,7 +14,7 @@ class BaseCase(unittest.TestCase):
             }
         })
         print(actual)
-        self.assertTrue(actual != None)
+        self.assertIsNotNone(actual)
 
 if __name__ == '__main__':
     unittest.main()
