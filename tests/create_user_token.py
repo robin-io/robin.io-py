@@ -14,8 +14,7 @@ class BaseCase(unittest.TestCase):
             }
         })
         print(actual)
-        expected = False
-        self.assertEqual(actual["error"], expected)
+        self.assertTrue(actual != None)
 
 if __name__ == '__main__':
     unittest.main()

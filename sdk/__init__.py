@@ -22,4 +22,8 @@ class Robin:
         data = r.json()
 
         #return data
-        return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
