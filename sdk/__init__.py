@@ -10,6 +10,11 @@ class Robin:
         self.tls = tls
         self.HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
 
+
+    """
+        Endpoints handling anything tokens
+    """
+
     
     def create_user_token(self, data):
         # defining a params dict for the parameters to be sent to the API
@@ -27,6 +32,13 @@ class Robin:
             return None
         else:
             return data["data"]
+
+
+    """
+        Endpoints handling anything conversations
+        1. create conversations
+        2. get conversations by ID
+    """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
         # defining a params dict for the parameters to be sent to the API
@@ -49,3 +61,23 @@ class Robin:
             return None
         else:
             return data["data"]
+
+    def get_conversation(self, id):
+
+        # sending get request and saving the response as response object
+        r = requests.get(url = BASE_URL+"/conversation/messages/"+id, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            if data["data"] is not None:
+                return data["data"]
+            else:
+                return []
+
+        
