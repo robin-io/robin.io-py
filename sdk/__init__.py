@@ -27,3 +27,25 @@ class Robin:
             return None
         else:
             return data["data"]
+
+    def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "sender_name": sender_name,
+            "sender_token": sender_token,
+            "receiver_token": receiver_token,
+            "receiver_name": receiver_name
+        }
+        
+        # sending post request and saving the response as response object
+        r = requests.post(url = BASE_URL+"/conversation", json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
