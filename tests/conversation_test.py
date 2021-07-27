@@ -12,5 +12,10 @@ class BaseCase(unittest.TestCase):
         print(actual)
         self.assertIsNotNone(actual)
 
+    def test_get_conversation_success(self):
+        actual = robin_test.get_conversation(id="610041ac411c882b47d633db")
+        print(actual)
+        self.assertIsNotNone(actual)
+
 if __name__ == '__main__':
     unittest.main()
