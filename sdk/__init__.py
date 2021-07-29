@@ -13,6 +13,8 @@ class Robin:
 
     """
         Endpoints handling anything tokens
+        1. create users token.
+        2. sync users token.
     """
 
     
@@ -96,5 +98,24 @@ class Robin:
                 return data["data"]
             else:
                 return []
+
+    """
+        Endpoints handling anything channels
+        1. create channel
+    """
+
+    def create_channel(self, name):
+
+        #check if the name is empty or contains just whitespace
+        if len(name) == 0 or name.isspace():
+            print("Channel name cannot be empty")
+            return None
+
+        data = {
+            "name": name,
+            "private_name": '-'.join(name.split()) +"-"+ self.api_key
+        }
+
+        return data
 
         
