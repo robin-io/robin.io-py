@@ -8,7 +8,7 @@ robin_test = Robin("NT-LSTTNiKdEQyAagVBdhKtoqqTEhbXGGZxaQbp", True)
 
 class BaseCase(unittest.TestCase):
     def test_create_channel_success(self):
-        actual = robin_test.create_channel(name=" ")
+        actual = robin_test.create_channel(name="Channel O")
         print(actual)
         self.assertIsNotNone(actual)
 
