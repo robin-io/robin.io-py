@@ -57,6 +57,8 @@ class Robin:
         Endpoints handling anything conversations
         1. create conversations
         2. get conversations by ID
+        3. delete conversation message
+        3. create group conversations
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -98,6 +100,51 @@ class Robin:
                 return data["data"]
             else:
                 return []
+
+    def delete_message(self, id):
+        # sending get request and saving the response as response object
+        r = requests.delete(url = BASE_URL+"/chat/message/"+id, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            if data["data"] is not None:
+                return data["data"]
+            else:
+                return []
+
+    
+    def create_group_conversation(self, group_name, moderator, participants):
+
+        #checks
+        if not isinstance(participants, list):
+            print("participants should be an array")
+            return None
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "name": group_name,
+            "moderator": moderator,
+            "participants": participants
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.post(url = BASE_URL+"/chat/conversation/group", json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
+
 
     """
         Endpoints handling anything channels

@@ -17,5 +17,31 @@ class BaseCase(unittest.TestCase):
         print(actual)
         self.assertIsNotNone(actual)
 
+    def test_delete_message_success(self):
+        actual = robin_test.delete_message(id="610041ac411c882b47d633db")
+        print(actual)
+        self.assertIsNotNone(actual)
+
+    def test_create_group_conversation_success(self):
+        moderator_data = {
+            "user_token":"IZiawwHPpHeE",
+            "meta_data": {
+                "name": "Elvis Chuks"
+            }
+        }
+
+        
+        participants_data = [
+            {
+                "user_token":"IZiawwHPpHeE",
+                "meta_data": {
+                    "name": "Josheph Ewu"
+                }
+            }
+        ] 
+        actual = robin_test.create_group_conversation(group_name="Sams Test Group", moderator=moderator_data, participants=participants_data)
+        print(actual)
+        self.assertIsNotNone(actual)
+
 if __name__ == '__main__':
     unittest.main()
