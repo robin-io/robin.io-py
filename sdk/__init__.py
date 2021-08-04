@@ -58,7 +58,8 @@ class Robin:
         1. create conversations
         2. get conversations by ID
         3. delete conversation message
-        3. create group conversations
+        4. create group conversations
+        5. search messages
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -125,6 +126,7 @@ class Robin:
         if not isinstance(participants, list):
             print("participants should be an array")
             return None
+
         # defining a params dict for the parameters to be sent to the API
         DATA = {
             "name": group_name,
@@ -134,6 +136,27 @@ class Robin:
 
         # sending post request and saving the response as response object
         r = requests.post(url = BASE_URL+"/chat/conversation/group", json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
+    
+    def search_message(self, id, text):
+
+        
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "text": text,
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.post(url = BASE_URL+"/chat/search/message/"+id, json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
