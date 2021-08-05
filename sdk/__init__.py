@@ -59,7 +59,9 @@ class Robin:
         2. get conversations by ID
         3. delete conversation message
         4. create group conversations
-        5. search messages
+        5. add group participants
+        6. remove group participants
+        7. search messages
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -123,6 +125,10 @@ class Robin:
     def create_group_conversation(self, group_name, moderator, participants):
 
         #checks
+        if group_name == "":
+            print("group name should not be empty")
+            return None
+        
         if not isinstance(participants, list):
             print("participants should be an array")
             return None
@@ -146,6 +152,62 @@ class Robin:
             return None
         else:
             return data["data"]
+
+    def add_group_participants(self, group_id, participants):
+
+        #checks
+        if group_id == "":
+            print("group id should not be empty")
+            return None
+
+        if not isinstance(participants, list):
+            print("participants should be an array")
+            return None
+        
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "participants": participants
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.put(url = BASE_URL+"/chat/conversation/group/add_participants/"+group_id, json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
+
+    def remove_group_participants(self, user_token, group_id):
+
+        #checks
+        if user_token == "":
+            print("user token cannot be empty")
+            return None
+
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "user_token": user_token
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.put(url = BASE_URL+"/chat/conversation/group/remove_participant/"+group_id, json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
+
+
     
     def search_message(self, id, text):
 
@@ -167,7 +229,7 @@ class Robin:
             return None
         else:
             return data["data"]
-
+    
 
     """
         Endpoints handling anything channels

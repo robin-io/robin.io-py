@@ -49,5 +49,26 @@ class BaseCase(unittest.TestCase):
         print(actual)
         self.assertIsNotNone(actual)
 
+    def test_add_group_participants_success(self):
+       
+        participants_data = [
+            {
+                "user_token":"IZiawwHPpHeE",
+                "meta_data": {
+                    "name": "Josheph Ewu"
+                }
+            }
+        ] 
+        actual = robin_test.add_group_participants(group_id="6103ee6628e71d0daf8dcd03", participants=participants_data)
+        print(actual)
+        self.assertIsNotNone(actual)
+
+    def test_remove_group_participants_success(self):
+        
+        
+        actual = robin_test.remove_group_participants(user_token="YFXOKVyKBGvHxuBaqKgDWOhE", group_id="6103ee6628e71d0daf8dcd03")
+        print(actual)
+        self.assertIsNotNone(actual)
+
 if __name__ == '__main__':
     unittest.main()
