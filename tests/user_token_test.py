@@ -26,5 +26,15 @@ class BaseCase(unittest.TestCase):
         print(actual)
         self.assertIsNotNone(actual)
 
+    def test_get_user_token_success(self):
+        actual = robin_test.get_user_token(data={
+            "user_token": "YFXOKVyKBGvHxuBaqKgDWOhE",
+            "meta_data":{
+                "email": "elvis@acumen.com.ng",
+            }
+        })
+        print(actual)
+        self.assertIsNotNone(actual)
+
 if __name__ == '__main__':
     unittest.main()

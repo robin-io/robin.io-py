@@ -15,6 +15,7 @@ class Robin:
         Endpoints handling anything tokens
         1. create users token.
         2. sync users token.
+        3. get users token.
     """
 
     
@@ -52,6 +53,22 @@ class Robin:
         else:
             return data["data"]
 
+    def get_user_token(self, data):
+        # defining a params dict for the parameters to be sent to the API
+        DATA = data
+        
+        # sending put request and saving the response as response object
+        r = requests.get(url = BASE_URL+"/chat/user_token/"+data['user_token'])
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
 
     """
         Endpoints handling anything conversations
@@ -61,7 +78,8 @@ class Robin:
         4. create group conversations
         5. add group participants
         6. remove group participants
-        7. search messages
+        7. assign group moderator
+        8. search messages
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -207,7 +225,30 @@ class Robin:
         else:
             return data["data"]
 
+    def assign_group_moderator(self, user_token, group_id):
 
+        #checks
+        if user_token == "":
+            print("user token cannot be empty")
+            return None
+
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "user_token": user_token
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.put(url = BASE_URL+"/chat/conversation/group/assign_moderator/"+group_id, json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
     
     def search_message(self, id, text):
 
