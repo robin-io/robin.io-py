@@ -70,5 +70,12 @@ class BaseCase(unittest.TestCase):
         print(actual)
         self.assertIsNotNone(actual)
 
+    def test_assign_group_moderator(self):
+
+        actual = robin_test.assign_group_moderator(user_token="YFXOKVyKBGvHxuBaqKgDWOhE", group_id="6103ee6628e71d0daf8dcd03")
+        print(actual)
+        self.assertIsNotNone(actual)
+
+
 if __name__ == '__main__':
     unittest.main()
