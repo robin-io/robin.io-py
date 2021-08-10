@@ -1,6 +1,8 @@
 import requests
-
-BASE_URL = "https://robbin-api.herokuapp.com/api/v1"
+import websocket
+import json
+import _thread
+import time
 
 class Robin:
 
@@ -8,6 +10,15 @@ class Robin:
 
         self.api_key = api_key
         self.tls = tls
+        self.ws = None
+
+        if tls:
+            self.WSURL = 'wss://robbin-api.herokuapp.com/ws'
+            self.BASEURL = 'https://robbin-api.herokuapp.com/api/v1'
+        else:
+            self.WSURL = 'ws://robbin-api.herokuapp.com/ws'
+            self.BASEURL = 'http://robbin-api.herokuapp.com/api/v1'
+
         self.HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
 
 
@@ -24,7 +35,7 @@ class Robin:
         DATA = data
         
         # sending post request and saving the response as response object
-        r = requests.post(url = BASE_URL+"/chat/user_token", json=DATA, headers=self.HEADERS)
+        r = requests.post(url = self.BASE_URL+"/chat/user_token", json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -41,7 +52,7 @@ class Robin:
         DATA = data
         
         # sending put request and saving the response as response object
-        r = requests.put(url = BASE_URL+"/chat/user_token/"+data['user_token'], json=DATA, headers=self.HEADERS)
+        r = requests.put(url = self.BASE_URL+"/chat/user_token/"+data['user_token'], json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -58,7 +69,7 @@ class Robin:
         DATA = data
         
         # sending put request and saving the response as response object
-        r = requests.get(url = BASE_URL+"/chat/user_token/"+data['user_token'])
+        r = requests.get(url = self.BASE_URL+"/chat/user_token/"+data['user_token'])
         
         # extracting data in json format
         data = r.json()
@@ -92,7 +103,7 @@ class Robin:
         }
         
         # sending post request and saving the response as response object
-        r = requests.post(url = BASE_URL+"/conversation", json=DATA, headers=self.HEADERS)
+        r = requests.post(url = self.BASE_URL+"/conversation", json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -107,7 +118,7 @@ class Robin:
     def get_conversation(self, id):
 
         # sending get request and saving the response as response object
-        r = requests.get(url = BASE_URL+"/conversation/messages/"+id, headers=self.HEADERS)
+        r = requests.get(url = self.BASE_URL+"/conversation/messages/"+id, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -124,7 +135,7 @@ class Robin:
 
     def delete_message(self, id):
         # sending get request and saving the response as response object
-        r = requests.delete(url = BASE_URL+"/chat/message/"+id, headers=self.HEADERS)
+        r = requests.delete(url = self.BASE_URL+"/chat/message/"+id, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -159,7 +170,7 @@ class Robin:
         }
 
         # sending post request and saving the response as response object
-        r = requests.post(url = BASE_URL+"/chat/conversation/group", json=DATA, headers=self.HEADERS)
+        r = requests.post(url = self.BASE_URL+"/chat/conversation/group", json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -188,7 +199,7 @@ class Robin:
         }
 
         # sending post request and saving the response as response object
-        r = requests.put(url = BASE_URL+"/chat/conversation/group/add_participants/"+group_id, json=DATA, headers=self.HEADERS)
+        r = requests.put(url = self.BASE_URL+"/chat/conversation/group/add_participants/"+group_id, json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -213,7 +224,7 @@ class Robin:
         }
 
         # sending post request and saving the response as response object
-        r = requests.put(url = BASE_URL+"/chat/conversation/group/remove_participant/"+group_id, json=DATA, headers=self.HEADERS)
+        r = requests.put(url = self.BASE_URL+"/chat/conversation/group/remove_participant/"+group_id, json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -238,7 +249,7 @@ class Robin:
         }
 
         # sending post request and saving the response as response object
-        r = requests.put(url = BASE_URL+"/chat/conversation/group/assign_moderator/"+group_id, json=DATA, headers=self.HEADERS)
+        r = requests.put(url = self.BASE_URL+"/chat/conversation/group/assign_moderator/"+group_id, json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -259,7 +270,7 @@ class Robin:
         }
 
         # sending post request and saving the response as response object
-        r = requests.post(url = BASE_URL+"/chat/search/message/"+id, json=DATA, headers=self.HEADERS)
+        r = requests.post(url = self.BASE_URL+"/chat/search/message/"+id, json=DATA, headers=self.HEADERS)
         
         # extracting data in json format
         data = r.json()
@@ -289,6 +300,79 @@ class Robin:
             "private_name": '-'.join(name.split()) +"-"+ self.api_key
         }
 
+        print("creating channel...")
+
         return data
 
+    
+    """
+        Endpoints handling anything websocket
+        1. connect to websocket
+        2. subscribe to websocket
+        3. send message to websocket
+        4. send conversation message to websocket
+    """
+
+    def on_message(self, ws, message):
+        print(message)
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print("### closed ###")
+
+    def on_open(self, ws):
+        def run(*args):
+            for i in range(3):
+                time.sleep(1)
+                ws.send("Hello %d" % i)
+            time.sleep(1)
+            
+        _thread.start_new_thread(run, ())
+
+    def connect(self, user_token):
+        print(self.WSURL)
+        print("connecting...")
+        socket = websocket.create_connection(self.WSURL+"/"+self.api_key+"/"+user_token)
+        
+        self.ws = socket
+        return self.ws
+
+    def subscribe(self, channel, conn):
+        msg = {
+            "type": 0,
+            "channel":  channel["name"],
+            "content": {}
+        }
+
+        print("subscribing...")
+
+        conn.send(json.dumps(msg, separators=(',', ':')))
+        return
+
+    def send_message(self, msg, conn, channel):
+
+        msg = {
+            "type": 1,
+            "channel":  channel["name"],
+            "content": msg,
+        }
+
+        print("sending...")
+
+        conn.send(json.dumps(msg, separators=(',', ':')))
+
+    def send_conversation_message(self, msg, conn, channel, conversation_id):
+
+        msg = {
+            "type": 1,
+            "channel":  channel,
+            "content": msg,
+            "conversation_id": conversation_id
+        }
+
+        print("sending...")
+
+        conn.send(json.dumps(msg, separators=(',', ':')))
         
