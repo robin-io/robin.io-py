@@ -300,6 +300,8 @@ class Robin:
             "private_name": '-'.join(name.split()) +"-"+ self.api_key
         }
 
+        print("creating channel...")
+
         return data
 
     
@@ -326,24 +328,16 @@ class Robin:
                 time.sleep(1)
                 ws.send("Hello %d" % i)
             time.sleep(1)
-            ws.close()
-            print("thread terminating...")
+            
         _thread.start_new_thread(run, ())
 
     def connect(self, user_token):
-
-        ws = websocket.WebSocketApp("ws://echo.websocket.org/",
-                              on_open=self.on_open,
-                              on_message=self.on_message,
-                              on_error=self.on_error,
-                              on_close=self.on_close)
-
+        print(self.WSURL)
+        print("connecting...")
+        socket = websocket.create_connection(self.WSURL+"/"+self.api_key+"/"+user_token)
         
-        ws.run_forever()
-
-        print(ws)
-
-        self.ws = ws
+        self.ws = socket
+        return self.ws
 
     def subscribe(self, channel, conn):
         msg = {
@@ -352,7 +346,7 @@ class Robin:
             "content": {}
         }
 
-        print(conn)
+        print("subscribing...")
 
         conn.send(json.dumps(msg, separators=(',', ':')))
         return
@@ -365,6 +359,8 @@ class Robin:
             "content": msg,
         }
 
+        print("sending...")
+
         conn.send(json.dumps(msg, separators=(',', ':')))
 
     def send_conversation_message(self, msg, conn, channel, conversation_id):
@@ -375,6 +371,8 @@ class Robin:
             "content": msg,
             "conversation_id": conversation_id
         }
+
+        print("sending...")
 
         conn.send(json.dumps(msg, separators=(',', ':')))
         
