@@ -313,32 +313,6 @@ class Robin:
         4. send conversation message to websocket
     """
 
-    def on_message(self, ws, message):
-        print(message)
-
-    def on_error(self, ws, error):
-        print(error)
-
-    def on_close(self, ws, close_status_code, close_msg):
-        print("### closed ###")
-
-    def on_open(self, ws):
-        def run(*args):
-            for i in range(3):
-                time.sleep(1)
-                ws.send("Hello %d" % i)
-            time.sleep(1)
-            
-        _thread.start_new_thread(run, ())
-
-    def connect(self, user_token):
-        print(self.WSURL)
-        print("connecting...")
-        socket = websocket.create_connection(self.WSURL+"/"+self.api_key+"/"+user_token)
-        
-        self.ws = socket
-        return self.ws
-
     def subscribe(self, channel, conn):
         msg = {
             "type": 0,
