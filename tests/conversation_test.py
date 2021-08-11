@@ -65,7 +65,6 @@ class BaseCase(unittest.TestCase):
 
     def test_remove_group_participants_success(self):
         
-        
         actual = robin_test.remove_group_participants(user_token="YFXOKVyKBGvHxuBaqKgDWOhE", group_id="6103ee6628e71d0daf8dcd03")
         print(actual)
         self.assertIsNotNone(actual)
@@ -75,6 +74,8 @@ class BaseCase(unittest.TestCase):
         actual = robin_test.assign_group_moderator(user_token="YFXOKVyKBGvHxuBaqKgDWOhE", group_id="6103ee6628e71d0daf8dcd03")
         print(actual)
         self.assertIsNotNone(actual)
+
+
 
 
 if __name__ == '__main__':
