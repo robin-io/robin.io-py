@@ -91,6 +91,7 @@ class Robin:
         6. remove group participants
         7. assign group moderator
         8. search messages
+        9. send message with attachment
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -281,7 +282,23 @@ class Robin:
             return None
         else:
             return data["data"]
-    
+
+    def send_message_attachment(self, user_token, conversation_id, file):
+
+        fd = {"sender_token":user_token, "conversation_id": conversation_id, "file": file}
+
+         # sending post request and saving the response as response object
+        r = requests.post(url = self.BASE_URL+"/conversation", json=DATA, files=fd, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
 
     """
         Endpoints handling anything channels
