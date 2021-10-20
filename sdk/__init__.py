@@ -321,7 +321,62 @@ class Robin:
 
         return data
 
+    """
+        Endpoints handling anything support staff
+        1. create support staff
+        2. get support staff
+    """
+
+    def create_support_staff(self, user_token):
+        #checks
+        if user_token == "":
+            print("user token cannot be empty")
+            return None
+
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "user_token": user_token
+        }
+
+        # sending post request and saving the response as response object
+        r = requests.put(url = self.BASE_URL+"/chat/user_token/support", json=DATA, headers=self.HEADERS)
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
+
+    def get_support_staff(self, support_name):
+
+        #checks
+        if support_name == "":
+            print("support name cannot be empty")
+            return None
+
+        # defining a params dict for the parameters to be sent to the API
+        DATA = {
+            "support_name": support_name
+        }
+        
+        # sending put request and saving the response as response object
+        r = requests.get(url = self.BASE_URL+"/chat/user_token/"+DATA['support_name'])
+        
+        # extracting data in json format
+        data = r.json()
+
+        #return data
+        if data["error"]:
+            print(data["error"])
+            return None
+        else:
+            return data["data"]
     
+
     """
         Endpoints handling anything websocket
         1. connect to websocket
