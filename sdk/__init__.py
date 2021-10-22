@@ -10,7 +10,6 @@ class Robin:
 
         self.api_key = api_key
         self.tls = tls
-        self.ws = None
 
         if tls:
             self.WSURL = 'wss://robbin-api.herokuapp.com/ws'
@@ -20,6 +19,28 @@ class Robin:
             self.BASEURL = 'http://robbin-api.herokuapp.com/api/v1'
 
         self.HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
+
+
+        
+
+    def on_message(self, ws, message):
+        print(message)
+
+    def on_error(self, ws, error):
+        print(error)
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print("### closed ###")
+
+    def on_open(self, ws):
+        def run(*args):
+            for i in range(3):
+                time.sleep(1)
+                ws.send("Hello %d" % i)
+            time.sleep(1)
+            
+        _thread.start_new_thread(run, ())
+        
 
 
     """
@@ -92,6 +113,9 @@ class Robin:
         7. assign group moderator
         8. search messages
         9. send message with attachment
+        10. archive conversation
+        11. unarchive conversation
+        12. forward messages
     """
 
     def create_conversation(self, sender_token, sender_name, receiver_token, receiver_name):
@@ -322,12 +346,12 @@ class Robin:
         return data
 
     """
-        Endpoints handling anything support staff
+        Endpoints handling anything support
         1. create support staff
         2. get support staff
     """
 
-    def create_support_staff(self, user_token):
+    def create_support_staff(self, user_token, support_name, support_id):
         #checks
         if user_token == "":
             print("user token cannot be empty")
@@ -335,7 +359,9 @@ class Robin:
 
         # defining a params dict for the parameters to be sent to the API
         DATA = {
-            "user_token": user_token
+            "user_token": user_token,
+            "support_name": support_name,
+            "support_id": support_id
         }
 
         # sending post request and saving the response as response object
@@ -364,7 +390,7 @@ class Robin:
         }
         
         # sending put request and saving the response as response object
-        r = requests.get(url = self.BASE_URL+"/chat/user_token/"+DATA['support_name'])
+        r = requests.get(url = self.BASE_URL+"/chat/user_token/support/"+DATA['support_name'])
         
         # extracting data in json format
         data = r.json()
@@ -383,9 +409,21 @@ class Robin:
         2. subscribe to websocket
         3. send message to websocket
         4. send conversation message to websocket
+        5. create support ticket.
     """
 
-    def subscribe(self, channel, conn):
+    def connect(self, user_token):
+
+        websocket.enableTrace(True)
+        self.ws = websocket.WebSocketApp(self.WSURL,
+                                on_open=self.on_open,
+                                on_message=self.on_message,
+                                on_error=self.on_error,
+                                on_close=self.on_close)
+
+        self.ws.run_forever()
+
+    def subscribe(self, channel):
         msg = {
             "type": 0,
             "channel":  channel["name"],
@@ -394,10 +432,10 @@ class Robin:
 
         print("subscribing...")
 
-        conn.send(json.dumps(msg, separators=(',', ':')))
+        self.ws.send(json.dumps(msg, separators=(',', ':')))
         return
 
-    def send_message(self, msg, conn, channel):
+    def send_message(self, msg, channel):
 
         msg = {
             "type": 1,
@@ -407,9 +445,9 @@ class Robin:
 
         print("sending...")
 
-        conn.send(json.dumps(msg, separators=(',', ':')))
+        self.ws.send(json.dumps(msg, separators=(',', ':')))
 
-    def send_conversation_message(self, msg, conn, channel, conversation_id):
+    def send_conversation_message(self, msg, channel, conversation_id):
 
         msg = {
             "type": 1,
@@ -420,5 +458,19 @@ class Robin:
 
         print("sending...")
 
-        conn.send(json.dumps(msg, separators=(',', ':')))
+        self.ws.send(json.dumps(msg, separators=(',', ':')))
         
+    def create_support_ticket(self, msg, channel, support_name, sender_token, sender_name):
+        
+        msg = {
+            "type": 1,
+            "channel":  channel,
+            "content": msg,
+            "suppor_name": support_name,
+            "sender_token": sender_token,
+            "sender_name": sender_name
+        }
+
+        print("sending...")
+
+        self.ws.send(json.dumps(msg, separators=(',', ':')))

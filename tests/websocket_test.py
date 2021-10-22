@@ -4,19 +4,19 @@ import unittest
 from sdk import Robin
 
 
-robin_test = Robin("NT-LSTTNiKdEQyAagVBdhKtoqqTEhbXGGZxaQbp", True)
+robin_test = Robin("NT-QuNtKolpzoWLahimkIjGAllEcJwGrymaVxQX", True)
 
 class BaseCase(unittest.TestCase):
     def test_connect_success(self):
         robin_test.connect(user_token="IZiawwHPpHeE")
 
         chann = robin_test.create_channel("test")
-        subscription = robin_test.subscribe(chann, robin_test.ws)
+        subscription = robin_test.subscribe(chann)
         print(subscription)
-        message = robin_test.send_message({"msg": "hello"}, robin_test.ws, chann)
+        message = robin_test.send_message({"msg": "hello"}, chann)
         print(message)
 
-        self.assertIsNotNone(actual)
+        
 
     
 
