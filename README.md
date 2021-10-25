@@ -4,21 +4,6 @@
 
 [![PyPI version](https://badge.fury.io/py/stream-chat.svg)](http://badge.fury.io/py/stream-chat) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/stream-chat.svg)
 
-<p align="start">
-<a href="https://npmjs.com/package/robin.io-js">
-    <img alt="" src="https://img.shields.io/npm/v/robin.io-js.svg">
-</a>
-  <a href="https://npmjs.com/package/robin.io-js
-">
-      <img alt="" src="https://img.shields.io/npm/dt/robin.io-js
-.svg">
-  </a>
-  <a href="https://npmjs.com/package/robin.io-js
-">
-      <img alt="" src="https://img.shields.io/npm/l/robin.io-js
-.svg">
-  </a>
-</p>
 
 ## Table of contents
 
