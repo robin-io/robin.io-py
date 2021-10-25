@@ -65,13 +65,10 @@ To use the features of the Chat SDK in your client app, a `robin` instance must 
 
 ### Step 1: Initialize the Chat SDK
 
-You need to initialize a `robin` instance before authentication. Initialization binds the Chat SDK to Javascript’s context which allows the Chat SDK to respond to connection, state changes and also enables client apps to use the Chat SDK features.
+To initialize a `Robin` instance, pass the `API key` as the first argument to in the `Robin()` method, You can find your API key in the API Configuration tab in your [Robin Account](https://robin-user.herokuapp.com/apiconfig).
 
-To initialize a `Robin` instance, pass the `API key` as the first argument to in the `new Robin()` method, You can find your API key in the API Configuration tab in your [Robin Account](https://robin-user.herokuapp.com/apiconfig).
-
-Then `true` or `false` for as the second parameter as it tells the sdk whether to load with ssl or not. As the `new Robin()` can only be a single instance, call it only a single time across your Javascript client app. Typically, initialization is implemented in the user login screen.
-
-> **Note**: It is recommended to initialize the Chat SDK at the top of your Javascript file.
+Then `true` or `false` for as the second parameter as it tells the sdk whether to load with ssl or not.
+> **Note**: It is recommended to initialize the Chat SDK at the top of your Python file.
 
 ```python
 robin = Robin("<api_key>", True)
