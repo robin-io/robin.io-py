@@ -447,13 +447,14 @@ class Robin:
 
         self.ws.send(json.dumps(msg, separators=(',', ':')))
 
-    def send_conversation_message(self, msg, channel, conversation_id):
+    def send_conversation_message(self, msg, channel, conversation_id, sender_token):
 
         msg = {
             "type": 1,
             "channel":  channel,
             "content": msg,
-            "conversation_id": conversation_id
+            "conversation_id": conversation_id,
+            "sender_token": sender_token
         }
 
         print("sending...")
