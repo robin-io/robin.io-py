@@ -41,28 +41,11 @@
 
 ## Introduction
 
-Robin.io-js is a Javascript SDK built to communicate with the [Robinapp API](https://robinapp.co/). Now you can integrate [Robin.io](https://robinapp.co/) with minimal effort and quickly setup a real-time messaging platform in your Web application.
-
-### Interactive Demo
-
-Checkout the <a target="_blank" href="https://robin-demo.herokuapp.com/"> Interactive Demo </a> here.
-<br>
-You can also checkout the sample repository <a target="_blank" href="https://github.com/robin-io/robin-vue-sdk-demo">here</a>.
+Robin.io-py is a Python SDK built to communicate with the [Robinapp API](https://robinapp.co/). Now you can integrate [Robin.io](https://robinapp.co/) with minimal effort and quickly setup a real-time messaging platform in your Web application.
 
 ## Prerequisites
 
-This library supports the following browsers:
 
-|      Browser      | Supported versions     |
-| :---------------: | :--------------------- |
-| Internet Explorer | 10 or higher           |
-|       Edge        | 13 or higher           |
-|      Chrome       | 16 or higher           |
-|      Firefox      | 11 or higher           |
-|      Safari       | 7 or higher            |
-|       Opera       | 12.1 or higher         |
-|    iOS Safari     | 7 or higher            |
-| Android Browswer  | 4.4 (Kitkat) or higher |
 
 ## Getting started
 
@@ -78,15 +61,9 @@ A Robinapp account comprises everything required in a chat service including use
 #### Step 2: Install the Chat SDK
 
 ```
-  ## NPM
+  ## PIP
 
-  npm install robin.io-js --save
-
-  OR
-
-  ## YARN
-
-  yarn add robinapp.io-js
+  pip3 install robin.io-py
 ```
 
 ## Sending your first message
