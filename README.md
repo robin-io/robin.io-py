@@ -2,6 +2,8 @@
   Robin.io-py
 </h1>
 
+[![PyPI version](https://badge.fury.io/py/stream-chat.svg)](http://badge.fury.io/py/stream-chat) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/stream-chat.svg)
+
 <p align="start">
 <a href="https://npmjs.com/package/robin.io-js">
     <img alt="" src="https://img.shields.io/npm/v/robin.io-js.svg">
@@ -45,7 +47,9 @@ Robin.io-py is a Python SDK built to communicate with the [Robinapp API](https:/
 
 ## Prerequisites
 
-
+The following packages are required to use the sdk:
+* Requests
+* Websocket-Client
 
 ## Getting started
 
@@ -84,8 +88,8 @@ Then `true` or `false` for as the second parameter as it tells the sdk whether t
 
 > **Note**: It is recommended to initialize the Chat SDK at the top of your Javascript file.
 
-```javascript
-const robin = new Robin('<api_key>', true);
+```python
+robin = Robin("<api_key>", True)
 ```
 
 ### Step 2: Connect to Robin server
@@ -96,18 +100,18 @@ You'll need a **USER_TOKEN** to connect to the Robin server.
 
 Create user token
 
-```javascript
-const response = await robin.createUserToken({
-  meta_data: {
-    username: 'elvis',
-  },
-});
+```python
+response = robin.create_user_token(data={
+    "meta_data":{
+        "name": "Samuel 0.",
+    }
+})
 ```
 
 Connect to the Robin server using the **USER_TOKEN** you just created.
 
-```javascript
-robin.connect(USER_TOKEN);
+```python
+robin.connect(user_token="<api_key>")
 ```
 
 ### Step 3: Channels
@@ -118,21 +122,16 @@ All messages sent via Robin are sent through channels, you can consider channels
 
 Before we can send a message to a channel we first need to create a converstion.
 
-```
-const response = await robin.createConversation({
-  sender_name: string,
-  sender_token: string,
-  receiver_token: string,
-  receiver_name: string
-})
+```python
+response = robin.create_conversation(sender_token="<sender_token>", sender_name="<sender_name>", receiver_token="<reciever_token>", receiver_name="<reciever_name>")    
 ```
 
 ### Step 5: Send a message to a conversation
 
 Finally, send a message to a conversation.
 
-```javascript
-robin.sendMessageToConversation(msg: object, conn: WebSocket, channel:string,conversation_id: string, senderToken?: string);
+```python
+robin.send_conversation_message(msg={}, channel="<channel_id>", conversation_id="<conversation_id>", sender_token="<sender_token>")
 ```
 
 #### Options
@@ -150,7 +149,7 @@ The following are general attributes used in Robin:
 
 If you have any comments or questions regarding bugs and feature requests, visit [Robinapp community](https://community.robinapp.co).
 
-[View Documentation Here](https://robin-io-js-doc-csgdc.ondigitalocean.app/classes/Robin.html).
+[View Documentation Here]().
 
 ## License
 
