@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='robin.io-py',
-    version='0.0.3',
+    version='0.0.8',
     description='Robin.io-py is a Python SDK built to communicate with the Robinapp API. Now you can integrate Robin.io with minimal effort and quickly setup a real-time messaging platform in your Web application.',
     url='https://github.com/robin-io/robin.io-py/',
 
