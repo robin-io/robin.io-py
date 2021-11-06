@@ -13,10 +13,10 @@ class Robin:
 
         if tls:
             self.WSURL = 'wss://robbin-api.herokuapp.com/ws'
-            self.BASEURL = 'https://robbin-api.herokuapp.com/api/v1'
+            self.BASE_URL = 'https://robbin-api.herokuapp.com/api/v1'
         else:
             self.WSURL = 'ws://robbin-api.herokuapp.com/ws'
-            self.BASEURL = 'http://robbin-api.herokuapp.com/api/v1'
+            self.BASE_URL = 'http://robbin-api.herokuapp.com/api/v1'
 
         self.HEADERS = {'content-type': 'application/json', 'x-api-key': self.api_key}
 
@@ -174,7 +174,6 @@ class Robin:
                 return data["data"]
             else:
                 return []
-
     
     def create_group_conversation(self, group_name, moderator, participants):
 
