@@ -1,7 +1,7 @@
 import os
 
 from robin import Robin
-from flask import Flask, request
+from flask import Flask, redirect, url_for, request
 
 robin_key = os.environ.get("ROBIN_SECRET_KEY")
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 """
     some example usage of robin resources.
 """
-
+@app.route('/channel',methods = ['POST'])
 def create_channel():
     
     #initialize new robin module
@@ -24,7 +24,7 @@ def create_channel():
 """
     method to create direct conversation with robin
 """
-
+@app.route('/conversation/direct/',methods = ['POST'])
 def create_direct_conversation():
 
     #initialize new robin module
@@ -38,7 +38,7 @@ def create_direct_conversation():
 """
     method to create group conversation with robin
 """
-
+@app.route('/conversation/group/',methods = ['POST'])
 def create_group_conversation():
 
     #initialize new robin module
@@ -69,19 +69,21 @@ def create_group_conversation():
 """
     method to search message in a conversation with robin
 """
+@app.route('/conversation/search/<conversation_id>/<search_text>',methods = ['GET'])
 def search_message():
     
     #initialize new robin module
     robin_test = Robin(robin_key, True)
 
     #search message in a conversation
-    response = robin_test.search_message(id="610041ac411c882b47d633db", text="rob chat")
+    response = robin_test.search_message(id=conversation_id, text=search_text)
 
     print(response)
 
 """
     method to delete message in a conversation with robin
 """
+@app.route('/conversation/delete/',methods = ['DELETE'])
 def delete_message():
     
     #initialize new robin module
@@ -95,26 +97,30 @@ def delete_message():
 """
     method to get a conversation with robin
 """
-def get_conversation():
+@app.route('/conversation/<conversation_id>',methods = ['GET'])
+def get_conversation(conversation_id):
     
     #initialize new robin module
     robin_test = Robin(robin_key, True)
 
     #retrieve all data related to a conversation
-    response = robin_test.get_conversation(id="610041ac411c882b47d633db")
+    response = robin_test.get_conversation(id=conversation_id)
 
     print(response)
 
 """
     method to send message with attachements like images, files in a conversation with robin
 """
+@app.route('/conversation/send/attachment/',methods = ['POST'])
 def send_message_attachment():
     
     #initialize new robin module
     robin_test = Robin(robin_key, True)
 
+    uploaded_file = request.files['file']
+
     #search message in a conversation
-    response = robin_test.send_message_attachment(user_token="IZiawwHPpHeE", conversation_id="610041ac411c882b47d633db", file="rob chat")
+    response = robin_test.send_message_attachment(user_token="IZiawwHPpHeE", conversation_id="610041ac411c882b47d633db", file=uploaded_file)
 
     print(response)
 
